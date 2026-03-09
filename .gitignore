@@ -1,0 +1,13 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# ML models
+*.pkl
+
+# datasets
+data/
+
+# OS
+.DS_Store
+Thumbs.db

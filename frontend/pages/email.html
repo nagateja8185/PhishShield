@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Scanner - PhishShield</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="shield-icon">&#128737;</span>
+                PhishShield
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/email.html" class="nav-link active">Email Scanner</a></li>
+                <li><a href="/url.html" class="nav-link">URL Scanner</a></li>
+                <li><a href="/website.html" class="nav-link">Website Checker</a></li>
+                <li><a href="/awareness.html" class="nav-link">Awareness</a></li>
+                <li><a href="/about.html" class="nav-link">About</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="analyzer-page">
+        <div class="analyzer-header">
+            <h1>Email Phishing Scanner</h1>
+            <p>Paste email content below to analyze it for phishing indicators</p>
+        </div>
+
+        <div class="analyzer-container">
+            <div class="input-section">
+                <div class="input-header">
+                    <h3>Email Content</h3>
+                    <button type="button" class="btn-text" onclick="loadExample()">Load Example</button>
+                </div>
+                <textarea 
+                    id="email-input" 
+                    class="analyzer-textarea"
+                    placeholder="Paste the full email content here including headers, subject, and body..."
+                    rows="15"
+                ></textarea>
+                <div class="input-actions">
+                    <button type="button" class="btn btn-primary btn-large" onclick="analyzeEmail()">
+                        <span class="btn-icon">&#128269;</span> Analyze Email
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="clearInput()">Clear</button>
+                </div>
+            </div>
+
+            <div class="result-section" id="result-section" style="display: none;">
+                <div class="result-header">
+                    <h3>Analysis Result</h3>
+                    <span class="timestamp" id="timestamp"></span>
+                </div>
+                
+                <div class="result-card" id="result-card">
+                    <div class="score-display">
+                        <div class="score-circle-wrapper">
+                            <div class="score-label-text">TRUST SCORE:</div>
+                            <div class="score-circle" id="score-circle">
+                                <span class="score-value" id="score-value">0</span>
+                            </div>
+                            <div class="risk-level-display">
+                                <span class="risk-level-label">RISK LEVEL:</span>
+                                <span class="risk-badge" id="risk-badge">Safe</span>
+                            </div>
+                            <p class="phishing-probability" id="phishing-probability">Phishing Probability: 0%</p>
+                        </div>
+                    </div>
+                    
+                    <div class="result-details">
+                        <h4>Explanation:</h4>
+                        <p id="explanation" class="explanation"></p>
+                        
+                        <h4>Risk Indicators</h4>
+                        <ul id="indicators-list" class="indicators-list"></ul>
+                    </div>
+                </div>
+
+                <div class="recommendations" id="recommendations">
+                    <h4>Security Recommendations</h4>
+                    <ul id="recommendations-list"></ul>
+                </div>
+            </div>
+
+            <div class="loading-overlay" id="loading-overlay" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing email content...</p>
+            </div>
+        </div>
+
+        <div class="tips-section">
+            <h3>What We Check</h3>
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <span class="tip-icon">&#9888;</span>
+                    <span>Urgent or threatening language</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">&#128273;</span>
+                    <span>Requests for credentials or personal info</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">&#128279;</span>
+                    <span>Suspicious links and attachments</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">&#128176;</span>
+                    <span>Too-good-to-be-true offers</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">&#128100;</span>
+                    <span>Impersonation of trusted entities</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">&#128172;</span>
+                    <span>Poor grammar and spelling</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <p>&copy; 2026 PhishShield. AI-powered phishing detection.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/emailAnalyzer.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Safety Checker - PhishShield</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* Additional styles for website checker */
+        .trust-score-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 32px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .trust-score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: conic-gradient(var(--score-color) 0%, var(--score-color) var(--score-percent), #e2e8f0 var(--score-percent), #e2e8f0 100%);
+        }
+        
+        .trust-score-circle::before {
+            content: '';
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .trust-score-value {
+            position: relative;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+        
+        .trust-score-label {
+            text-align: center;
+        }
+        
+        .trust-score-label h2 {
+            font-size: 1.75rem;
+            margin-bottom: 4px;
+        }
+        
+        .confidence-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .signals-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .signals-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+        
+        .signals-card.positive {
+            border-top: 4px solid var(--success-color);
+        }
+        
+        .signals-card.negative {
+            border-top: 4px solid var(--danger-color);
+        }
+        
+        .signals-card h4 {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .signal-list {
+            list-style: none;
+        }
+        
+        .signal-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .signal-item:last-child {
+            border-bottom: none;
+        }
+        
+        .signal-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+        
+        .signal-icon.positive {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+        
+        .signal-icon.negative {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .signal-content {
+            flex: 1;
+        }
+        
+        .signal-impact {
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+        
+        .signal-impact.positive {
+            color: var(--success-color);
+        }
+        
+        .signal-impact.negative {
+            color: var(--danger-color);
+        }
+        
+        .technical-details {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+        
+        .technical-details h4 {
+            margin-bottom: 16px;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .detail-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .recommendation-card {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(37, 99, 235, 0.1) 100%);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .recommendation-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+        
+        .recommendation-card ul {
+            list-style: none;
+        }
+        
+        .recommendation-card li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+        
+        .recommendation-card li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .signals-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .trust-score-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .trust-score-circle::before {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .trust-score-value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="shield-icon">&#128737;</span>
+                PhishShield
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/email.html" class="nav-link">Email Scanner</a></li>
+                <li><a href="/url.html" class="nav-link">URL Scanner</a></li>
+                <li><a href="/website.html" class="nav-link active">Website Checker</a></li>
+                <li><a href="/awareness.html" class="nav-link">Awareness</a></li>
+                <li><a href="/about.html" class="nav-link">About</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="analyzer-page">
+        <div class="analyzer-header">
+            <h1>Website Safety Checker</h1>
+            <p>Comprehensive analysis with Trust Score - inspired by ScamAdviser</p>
+        </div>
+
+        <div class="analyzer-container">
+            <div class="input-section">
+                <div class="input-header">
+                    <h3>Website URL</h3>
+                    <button type="button" class="btn-text" onclick="loadExample()">Load Example</button>
+                </div>
+                <div class="url-input-wrapper">
+                    <input 
+                        type="text" 
+                        id="url-input" 
+                        class="url-input"
+                        placeholder="https://example.com or example.com"
+                    />
+                </div>
+                <div class="input-actions">
+                    <button type="button" class="btn btn-primary btn-large" onclick="analyzeWebsite()">
+                        <span class="btn-icon">&#128269;</span> Analyze Website
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="clearInput()">Clear</button>
+                </div>
+                <p style="margin-top: 12px; color: var(--text-secondary); font-size: 0.875rem;">
+                    <span style="color: var(--primary-color);">&#8505;</span> 
+                    This performs comprehensive analysis including domain intelligence, SSL certificate, and reputation checks.
+                </p>
+            </div>
+
+            <div class="result-section" id="result-section" style="display: none;">
+                <div class="result-header">
+                    <h3>Analysis Result</h3>
+                    <span class="timestamp" id="timestamp"></span>
+                </div>
+                
+                <!-- Trust Score Display -->
+                <div class="trust-score-display" id="trust-score-display">
+                    <div class="trust-score-circle" id="trust-score-circle">
+                        <span class="trust-score-value" id="trust-score-value">0</span>
+                    </div>
+                    <div class="trust-score-label">
+                        <h2 id="risk-level">Unknown</h2>
+                        <span class="confidence-badge" id="confidence-badge">Low Confidence</span>
+                    </div>
+                    <p id="domain-display" style="color: var(--text-secondary); font-size: 0.9375rem;"></p>
+                </div>
+
+                <!-- Signals Section -->
+                <div class="signals-section">
+                    <div class="signals-card positive" id="positive-signals-card">
+                        <h4><span style="color: var(--success-color);">&#10003;</span> Positive Signals</h4>
+                        <ul class="signal-list" id="positive-signals-list"></ul>
+                    </div>
+                    <div class="signals-card negative" id="negative-signals-card">
+                        <h4><span style="color: var(--danger-color);">&#10007;</span> Negative Signals</h4>
+                        <ul class="signal-list" id="negative-signals-list"></ul>
+                    </div>
+                </div>
+
+                <!-- Technical Details -->
+                <div class="technical-details">
+                    <h4>Technical Details</h4>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Domain Age</span>
+                            <span class="detail-value" id="detail-domain-age">Unknown</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">IP Address</span>
+                            <span class="detail-value" id="detail-ip">Unknown</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">SSL Certificate</span>
+                            <span class="detail-value" id="detail-ssl">Unknown</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">HTTPS</span>
+                            <span class="detail-value" id="detail-https">Unknown</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">WHOIS Privacy</span>
+                            <span class="detail-value" id="detail-whois">Unknown</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">ML Prediction</span>
+                            <span class="detail-value" id="detail-ml">Unknown</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendation -->
+                <div class="recommendation-card" id="recommendation-card">
+                    <h4 id="recommendation-title">Recommendation</h4>
+                    <ul id="recommendation-list"></ul>
+                </div>
+            </div>
+
+            <div class="loading-overlay" id="loading-overlay" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing website...</p>
+                <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 8px;">
+                    Checking domain intelligence, SSL certificate, and reputation...
+                </p>
+            </div>
+        </div>
+
+        <div class="tips-section">
+            <h3>What We Check</h3>
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <span class="tip-icon">&#128197;</span>
+                    <span>Domain age and registration history</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">&#128274;</span>
+                    <span>SSL certificate validity</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">&#127760;</span>
+                    <span>Domain reputation</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">&#128100;</span>
+                    <span>WHOIS information</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">&#128208;</span>
+                    <span>URL structure analysis</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">&#129302;</span>
+                    <span>Machine learning detection</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <p>&copy; 2026 PhishShield. AI-powered phishing detection.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/websiteAnalyzer.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishShield - AI-Powered Phishing Detection</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="shield-icon">&#128737;</span>
+                PhishShield
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link active">Home</a></li>
+                <li><a href="/email.html" class="nav-link">Email Scanner</a></li>
+                <li><a href="/url.html" class="nav-link">URL Scanner</a></li>
+                <li><a href="/website.html" class="nav-link">Website Checker</a></li>
+                <li><a href="/awareness.html" class="nav-link">Awareness</a></li>
+                <li><a href="/about.html" class="nav-link">About</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Protect Yourself from Phishing Attacks</h1>
+            <p class="hero-subtitle">AI-powered detection for suspicious emails and malicious URLs</p>
+            <div class="hero-buttons">
+                <a href="/email.html" class="btn btn-primary">Scan Email</a>
+                <a href="/url.html" class="btn btn-secondary">Scan URL</a>
+                <a href="/website.html" class="btn btn-secondary">Check Website</a>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-number">95%</span>
+                <span class="stat-label">Detection Accuracy</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">&lt;2s</span>
+                <span class="stat-label">Analysis Time</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">Free to Use</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="features">
+            <h2>How PhishShield Protects You</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#128231;</div>
+                    <h3>Email Analysis</h3>
+                    <p>Detect phishing attempts in emails by analyzing text patterns, suspicious keywords, and social engineering tactics.</p>
+                    <a href="/email.html" class="feature-link">Try Email Scanner &rarr;</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128279;</div>
+                    <h3>URL Scanner</h3>
+                    <p>Analyze URLs for malicious characteristics including suspicious domains, IP addresses, and obfuscation techniques.</p>
+                    <a href="/url.html" class="feature-link">Try URL Scanner &rarr;</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128200;</div>
+                    <h3>Risk Scoring</h3>
+                    <p>Get detailed risk scores from 0-100 with clear explanations of why content is safe or suspicious.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128218;</div>
+                    <h3>Security Education</h3>
+                    <p>Learn about common phishing techniques and how to protect yourself from cyber threats.</p>
+                    <a href="/awareness.html" class="feature-link">Learn More &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="risk-levels">
+            <h2>Understanding Risk Levels</h2>
+            <div class="risk-cards">
+                <div class="risk-card safe">
+                    <div class="risk-badge safe">Safe</div>
+                    <h4>0-30% Risk Score</h4>
+                    <p>The content appears legitimate with minimal or no suspicious indicators detected.</p>
+                </div>
+                <div class="risk-card suspicious">
+                    <div class="risk-badge suspicious">Suspicious</div>
+                    <h4>31-70% Risk Score</h4>
+                    <p>Some suspicious characteristics found. Exercise caution and verify before proceeding.</p>
+                </div>
+                <div class="risk-card dangerous">
+                    <div class="risk-badge dangerous">Dangerous</div>
+                    <h4>71-100% Risk Score</h4>
+                    <p>High probability of phishing. Avoid clicking links or providing any information.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="recent-scans">
+            <h2>Recent Scans</h2>
+            <div id="recent-scans-container">
+                <p class="no-scans">No recent scans. Start by scanning an email or URL.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>PhishShield</h4>
+                <p>AI-powered phishing detection for everyone. Protecting users from email and URL-based cyber threats.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/email.html">Email Scanner</a></li>
+                    <li><a href="/url.html">URL Scanner</a></li>
+                    <li><a href="/awareness.html">Security Awareness</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Disclaimer</h4>
+                <p>This tool provides automated analysis and should not replace human judgment. Always verify suspicious content through official channels.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 PhishShield. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/js/dashboard.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
